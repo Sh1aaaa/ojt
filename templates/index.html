@@ -1,30 +1,332 @@
-<!doctype html>
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Employee Attendance</title><link rel="stylesheet" href="/static/style.css">
-</head>
-<body>
-<header class="topbar"><a class="brand" href="/"><span class="brand-mark small">AT</span><span>TIME<span class="brand-light">TRACK</span></span></a><div class="top-right"><span id="live-date"></span><button id="logout" class="text-button hidden">Sign out</button></div></header>
-<main class="shell">
-  <section id="login-panel" class="login-card">
-    <div class="eyebrow">EMPLOYEE PORTAL</div><h1>Welcome back.</h1><p class="muted">Sign in to record your attendance.</p>
-    <form id="login-form"><label>Email address<input id="email" type="email" placeholder="you@company.com" required autocomplete="username"></label><label>Password<input id="password" type="password" placeholder="Enter your password" required autocomplete="current-password"></label><button class="primary full" type="submit">Sign in <span>→</span></button></form>
-    <p id="login-error" class="error"></p><p class="hint">Your account must be created in Supabase Authentication by your system administrator.</p>
-  </section>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <section id="dashboard" class="hidden">
-    <div class="welcome-row"><div><div class="eyebrow">EMPLOYEE ATTENDANCE</div><h1>Good day<span class="accent">.</span></h1><p class="muted">Hello, <strong id="employee-name">Employee</strong>. Ready to start?</p></div><div class="live-clock"><span class="live-dot"></span><span id="live-time">--:--:--</span><small>PHILIPPINE TIME</small></div></div>
-    <div class="status-card"><div><span class="status-label">TODAY'S STATUS</span><h2 id="status-title">Not clocked in</h2><p id="status-desc">Record your time in when you start work.</p></div><span id="status-pill" class="pill neutral">NOT STARTED</span></div>
-    <div class="action-grid">
-      <article class="action-card"><div class="action-icon in-icon">↘</div><h3>Time In</h3><p>Record the time you begin your workday.</p><button id="clock-in" class="primary full">TIME IN <span>→</span></button></article>
-      <article class="action-card"><div class="action-icon out-icon">↗</div><h3>Time Out</h3><p>Record the time you finish your workday.</p><button id="clock-out" class="secondary full">TIME OUT <span>→</span></button></article>
+    <title>Employee Attendance</title>
+
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+<header class="topbar">
+
+    <a class="brand" href="/">
+        <span class="brand-mark">AT</span>
+        <span>TIME<span class="brand-light">TRACK</span></span>
+    </a>
+
+    <div class="top-right">
+        <span id="live-date"></span>
+        <button id="logout" class="text-button hidden">
+            Sign out
+        </button>
     </div>
-    <div class="history-head"><div><div class="eyebrow">YOUR RECORDS</div><h2>Attendance history</h2></div><button id="refresh" class="refresh">↻ Refresh</button></div>
-    <div class="table-wrap"><table><thead><tr><th>DATE</th><th>TIME IN</th><th>TIME OUT</th><th>STATUS</th></tr></thead><tbody id="history"><tr><td colspan="4" class="empty">Loading attendance records...</td></tr></tbody></table></div>
-    <p class="footnote">Times are recorded by the server in Philippine time (Asia/Manila).</p>
-  </section>
-  <div id="toast" class="toast" role="status"></div>
+
+</header>
+
+
+<main class="shell">
+
+    <!-- LOGIN -->
+
+    <section id="login-panel" class="login-card">
+
+        <div class="eyebrow">EMPLOYEE PORTAL</div>
+
+        <h1>Welcome back.</h1>
+
+        <p class="muted">
+            Sign in to record your attendance.
+        </p>
+
+        <form id="login-form">
+
+            <label>
+                Email address
+
+                <input
+                    id="email"
+                    type="email"
+                    placeholder="you@company.com"
+                    required
+                >
+            </label>
+
+            <label>
+                Password
+
+                <input
+                    id="password"
+                    type="password"
+                    placeholder="Enter your password"
+                    required
+                >
+            </label>
+
+            <button class="primary full" type="submit">
+                Sign in →
+            </button>
+
+        </form>
+
+        <p id="login-error" class="error"></p>
+
+        <div class="register-prompt">
+            Don't have an account?
+
+            <button
+                id="show-register"
+                class="inline-link"
+                type="button"
+            >
+                Register here
+            </button>
+        </div>
+
+    </section>
+
+
+    <!-- REGISTRATION -->
+
+    <section id="register-panel" class="login-card hidden">
+
+        <div class="eyebrow">NEW EMPLOYEE ACCOUNT</div>
+
+        <h1>Create account.</h1>
+
+        <p class="muted">
+            Register to access the employee attendance portal.
+        </p>
+
+        <form id="register-form">
+
+            <label>
+                Full name
+
+                <input
+                    id="register-name"
+                    type="text"
+                    placeholder="Juan Dela Cruz"
+                    maxlength="120"
+                    required
+                >
+            </label>
+
+            <label>
+                Employee ID
+
+                <input
+                    id="register-employee-id"
+                    type="text"
+                    placeholder="Enter employee ID"
+                    maxlength="60"
+                    required
+                >
+            </label>
+
+            <label>
+                Email address
+
+                <input
+                    id="register-email"
+                    type="email"
+                    placeholder="you@company.com"
+                    required
+                >
+            </label>
+
+            <label>
+                Password
+
+                <input
+                    id="register-password"
+                    type="password"
+                    placeholder="At least 8 characters"
+                    minlength="8"
+                    required
+                >
+            </label>
+
+            <label>
+                Confirm password
+
+                <input
+                    id="confirm-password"
+                    type="password"
+                    placeholder="Re-enter your password"
+                    minlength="8"
+                    required
+                >
+            </label>
+
+            <button
+                id="register-submit"
+                class="primary full"
+                type="submit"
+            >
+                Create account →
+            </button>
+
+        </form>
+
+        <p id="register-error" class="error"></p>
+
+        <div class="register-prompt">
+            Already have an account?
+
+            <button
+                id="show-login"
+                class="inline-link"
+                type="button"
+            >
+                Back to sign in
+            </button>
+        </div>
+
+    </section>
+
+
+    <!-- DASHBOARD -->
+
+    <section id="dashboard" class="hidden">
+
+        <div class="welcome-row">
+
+            <div>
+                <div class="eyebrow">EMPLOYEE ATTENDANCE</div>
+
+                <h1>
+                    Good day<span class="accent">.</span>
+                </h1>
+
+                <p class="muted">
+                    Hello,
+                    <strong id="employee-name">Employee</strong>.
+                    Ready to start?
+                </p>
+            </div>
+
+            <div class="live-clock">
+                <span id="live-time">--:--:--</span>
+                <small>PHILIPPINE TIME</small>
+            </div>
+
+        </div>
+
+
+        <div class="status-card">
+
+            <div>
+                <span class="status-label">TODAY'S STATUS</span>
+
+                <h2 id="status-title">
+                    Not clocked in
+                </h2>
+
+                <p id="status-desc">
+                    Record your time in when you start work.
+                </p>
+            </div>
+
+            <span id="status-pill" class="pill neutral">
+                NOT STARTED
+            </span>
+
+        </div>
+
+
+        <div class="action-grid">
+
+            <article class="action-card">
+
+                <h3>Time In</h3>
+
+                <p>
+                    Record the time you begin your workday.
+                </p>
+
+                <button
+                    id="clock-in"
+                    class="primary full"
+                    type="button"
+                >
+                    TIME IN →
+                </button>
+
+            </article>
+
+
+            <article class="action-card">
+
+                <h3>Time Out</h3>
+
+                <p>
+                    Record the time you finish your workday.
+                </p>
+
+                <button
+                    id="clock-out"
+                    class="secondary full"
+                    type="button"
+                >
+                    TIME OUT →
+                </button>
+
+            </article>
+
+        </div>
+
+
+        <div class="history-head">
+
+            <div>
+                <div class="eyebrow">YOUR RECORDS</div>
+                <h2>Attendance history</h2>
+            </div>
+
+            <button id="refresh" class="refresh" type="button">
+                ↻ Refresh
+            </button>
+
+        </div>
+
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>DATE</th>
+                        <th>TIME IN</th>
+                        <th>TIME OUT</th>
+                        <th>STATUS</th>
+                    </tr>
+                </thead>
+
+                <tbody id="history">
+                    <tr>
+                        <td colspan="4" class="empty">
+                            Loading attendance records...
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+    <div id="toast" class="toast"></div>
+
 </main>
+
 <script src="/static/app.js"></script>
-</body></html>
+
+</body>
+</html>
