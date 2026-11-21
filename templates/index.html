@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Employee Attendance</title><link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header class="topbar"><a class="brand" href="/"><span class="brand-mark small">AT</span><span>TIME<span class="brand-light">TRACK</span></span></a><div class="top-right"><span id="live-date"></span><button id="logout" class="text-button hidden">Sign out</button></div></header>
+<main class="shell">
+  <section id="login-panel" class="login-card">
+    <div class="eyebrow">EMPLOYEE PORTAL</div><h1>Welcome back.</h1><p class="muted">Sign in to record your attendance.</p>
+    <form id="login-form"><label>Email address<input id="email" type="email" placeholder="you@company.com" required autocomplete="username"></label><label>Password<input id="password" type="password" placeholder="Enter your password" required autocomplete="current-password"></label><button class="primary full" type="submit">Sign in <span>→</span></button></form>
+    <p id="login-error" class="error"></p><p class="hint">Your account must be created in Supabase Authentication by your system administrator.</p>
+  </section>
+
+  <section id="dashboard" class="hidden">
+    <div class="welcome-row"><div><div class="eyebrow">EMPLOYEE ATTENDANCE</div><h1>Good day<span class="accent">.</span></h1><p class="muted">Hello, <strong id="employee-name">Employee</strong>. Ready to start?</p></div><div class="live-clock"><span class="live-dot"></span><span id="live-time">--:--:--</span><small>PHILIPPINE TIME</small></div></div>
+    <div class="status-card"><div><span class="status-label">TODAY'S STATUS</span><h2 id="status-title">Not clocked in</h2><p id="status-desc">Record your time in when you start work.</p></div><span id="status-pill" class="pill neutral">NOT STARTED</span></div>
+    <div class="action-grid">
+      <article class="action-card"><div class="action-icon in-icon">↘</div><h3>Time In</h3><p>Record the time you begin your workday.</p><button id="clock-in" class="primary full">TIME IN <span>→</span></button></article>
+      <article class="action-card"><div class="action-icon out-icon">↗</div><h3>Time Out</h3><p>Record the time you finish your workday.</p><button id="clock-out" class="secondary full">TIME OUT <span>→</span></button></article>
+    </div>
+    <div class="history-head"><div><div class="eyebrow">YOUR RECORDS</div><h2>Attendance history</h2></div><button id="refresh" class="refresh">↻ Refresh</button></div>
+    <div class="table-wrap"><table><thead><tr><th>DATE</th><th>TIME IN</th><th>TIME OUT</th><th>STATUS</th></tr></thead><tbody id="history"><tr><td colspan="4" class="empty">Loading attendance records...</td></tr></tbody></table></div>
+    <p class="footnote">Times are recorded by the server in Philippine time (Asia/Manila).</p>
+  </section>
+  <div id="toast" class="toast" role="status"></div>
+</main>
+<script src="/static/app.js"></script>
+</body></html>
